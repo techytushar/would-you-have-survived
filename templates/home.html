@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Would you have survived?</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .heading{
+            margin: auto;
+            text-align: center;
+            z-index: 100;
+            top:0;
+        }
+        .form{
+            margin: auto;
+            width: 80%;
+            z-index: 100;
+            margin-top: 50px;
+            text-align: center;
+        }
+        .error{
+            display:none;
+        }
+    </style>
+</head>
+<body>
+    <div class="heading">
+        <h1>Would you have survived?</h1>
+        <h3>Fill the form below to predict whether you would have survived on the Titanic ship.</h3>
+        <h4>It uses a machine learning model trained on the Kaggle Titanic Dataset using the Random Forest Classifier which gained an accuracy of 78.94%</h4>
+    </div>
+    <div class="form" id="form">
+        <div class="alert alert-danger error">
+        </div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="name">Name:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="name" placeholder="Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="age">Age:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="age" placeholder="Age" maxlength="3">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="sibsp">Sibling/Spouse aboard:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="sibsp" maxlength="2">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="parch">Parents/Children aboard:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="parch" maxlength="2">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="pclass">Ticket Class: </label>
+                <div class="col-sm-6 choice">
+                    <label class="radio-inline"><input type="radio" name="pclass" checked value="1">Frist Class</label>
+                    <label class="radio-inline"><input type="radio" name="pclass" value="2">Second Class</label>
+                    <label class="radio-inline"><input type="radio" name="pclass" value="3">Third Class</label> 
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="gender">Gender: </label>
+                <div class="col-sm-6 choice">
+                    <label class="radio-inline"><input type="radio" name="gender" value="1" checked>Male</label>
+                    <label class="radio-inline"><input type="radio" name="gender" value="0">Female</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4" for="port">Port of Embarkation: </label>
+                <div class="col-sm-6 choice">
+                    <label class="radio-inline"><input type="radio" name="port" value="1" checked>Cherbourg</label>
+                    <label class="radio-inline"><input type="radio" name="port" value="2">Queenstown</label>
+                    <label class="radio-inline"><input type="radio" name="port" value="3">Southampton</label> 
+                </div>
+            </div>
+        </form>
+        <div class="form-group">
+            <button id="predict" class="btn btn-success">Predict!</button>
+        </div>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        function display_error(message){
+            $(".error").removeClass("alert-success alert-warning");
+            $(".error").addClass("alert-danger");
+            $("div.error").html(`<strong>${message}</strong>`);
+            $("div.error").css("display","block");
+            setTimeout(()=>{
+                $(".error").html("");
+                $(".error").css("display", "none");
+            },2000)  
+        }
+
+        function make_form(){
+            let form = {};
+            form['name'] = $("#name").val();
+            form['age'] = $("#age").val();
+            form['sibsp'] = $("#sibsp").val();
+            form['parch'] = $("#parch").val();
+            form['pclass'] = $('input[name=pclass]:checked').val();
+            form['port'] = $('input[name=port]:checked').val();
+            form['sex'] = $('input[name=gender]:checked').val();
+            return form;
+        }
+
+        $("#predict").click(()=>{
+            let name = $("#name").val();
+            let age = $("#age").val();
+            let sibsp = $("#sibsp").val();
+            let parch = $("#parch").val();
+            let pclass = $('input[name=pclass]:checked').val();
+            let port = $('input[name=port]:checked').val();
+            let gender = $('input[name=gender]:checked').val();
+            console.log(pclass, port, gender)
+            if (name.trim()==""){
+                display_error("Please enter a valid name");
+                return;
+            }
+            if (age.trim()==""){
+                display_error("Please enter a valid age");
+                return;
+            }
+            if (sibsp.trim()=="" || parch.trim()=="" || parseInt(sibsp)==NaN || parseInt(parch)==NaN){
+                display_error("Please enter a valid integer value");
+                return;
+            }
+            name = name.split(" ")[0].toUpperCase();
+            let form = make_form();
+            $.ajax({
+                type: "POST",
+                contentType: 'application/json;charset=UTF-8',
+                enctype: 'multipart/form-data',
+                url: "/predict",
+                cache: false,
+                dataType: 'json',
+                timeout: 600000,
+                data: JSON.stringify(form),
+                success: function (data) {
+                    $(".error").css("display","block");
+                    if(data["survived"]=='1'){
+                        $(".error").removeClass("alert-danger alert-warning");
+                        $(".error").addClass("alert-success");
+                        $(".error").html(`<strong>Congratulations ${name}!</strong> You would have survived the Titanic Crash. :)`);
+                    }
+                    else{
+                        $(".error").removeClass("alert-danger alert-success");
+                        $(".error").addClass("alert-warning");
+                        $(".error").html(`<strong>Sorry ${name}!</strong> You would not have survived the Titanic Crash. :(`);
+                    }
+                },
+                error: function (e) {
+                    display_error("Some error occured, please try again later.");
+                }
+            });
+        })
+
+    </script>
+</html>
