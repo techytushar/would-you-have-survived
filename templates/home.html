@@ -24,6 +24,9 @@
         .error{
             display:none;
         }
+        #predict{
+            margin-top: 30px;
+        }
         #modal-button{
             display:none;
         }
@@ -39,14 +42,26 @@
         .yellow-modal{
             background-color: #ffcc00;
         }
+        .footer{
+            margin-top:30px;
+            margin-bottom:0px;
+            color:rgb(0, 0, 0);
+        }  
+        .footer a{
+            color:rgb(78, 78, 78);
+        }  
+        .footer a:hover{
+            color:rgb(161, 161, 161);
+        }
     </style>
 </head>
 <body>
-    <a href="https://github.com/techytushar/would-you-have-survived"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" height="140px" width="140px"></a>
+    <a href="https://github.com/techytushar/would-you-have-survived" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" height="140px" width="140px"></a>
     <div class="heading">
         <h1>Would you have survived?</h1>
         <h3>Fill the form below to predict whether you would have survived on the Titanic ship.</h3>
         <h4>It uses a machine learning model trained on the Kaggle Titanic Dataset using the Random Forest Classifier which gained an accuracy of 78.94%</h4>
+        <h5>PS: I don't intend to hurt anyone's feelings.</h5>
     </div>
     <div class="form" id="form">
         <div class="alert alert-danger error">
@@ -103,6 +118,7 @@
         <div class="form-group">
             <button id="predict" class="btn btn-success">Predict!</button>
         </div>
+
     </div>
 
     <button type="button" class="btn btn-info btn-lg" id="modal-button" data-toggle="modal" data-target="#myModal"></button>
@@ -121,6 +137,9 @@
             </div>
         </div>
     </div>
+    <center>
+    <p class="footer">Made with <span style="color:rgb(255, 109, 109)">♥</span> by <a href="https://techytushar.github.io/" target="_blank">Tushar Mittal (@techytushar)</a></p>
+    </center>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
