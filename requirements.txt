@@ -2,3 +2,4 @@ numpy
 flask
 flask_restful
 scikit-learn==0.19.2
+gunicorn==19.7.1
