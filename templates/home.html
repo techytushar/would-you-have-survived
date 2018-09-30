@@ -26,6 +26,7 @@
     </style>
 </head>
 <body>
+    <a href="https://github.com/techytushar/would-you-have-survived"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
     <div class="heading">
         <h1>Would you have survived?</h1>
         <h3>Fill the form below to predict whether you would have survived on the Titanic ship.</h3>
@@ -123,7 +124,6 @@
             let pclass = $('input[name=pclass]:checked').val();
             let port = $('input[name=port]:checked').val();
             let gender = $('input[name=gender]:checked').val();
-            console.log(pclass, port, gender)
             if (name.trim()==""){
                 display_error("Please enter a valid name");
                 return;
