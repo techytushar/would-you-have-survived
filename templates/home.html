@@ -1,231 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="desciption" content="Predict whether you would have survived on the Titanic ship. It uses a machine learning model trained on the Kaggle Titanic Dataset using the Random Forest Classifier.">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Would you have survived?</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <style>
-        .heading{
-            margin: auto;
-            text-align: center;
-            z-index: 100;
-            top:0;
-        }
-        .form{
-            margin: auto;
-            width: 80%;
-            z-index: 100;
-            margin-top: 50px;
-            text-align: center;
-        }
-        .error{
-            display:none;
-        }
-        #predict{
-            margin-top: 30px;
-        }
-        #modal-button{
-            display:none;
-        }
-        .modal-header, .modal-body{
-            text-align: center;
-        }
-        .green-modal {
-            background-color: #04dd2f;
-        }
-        .red-modal{
-            background-color: #ea2300;
-        }
-        .yellow-modal{
-            background-color: #ffcc00;
-        }
-        .footer{
-            margin-top:30px;
-            margin-bottom:0px;
-            color:rgb(0, 0, 0);
-        }  
-        .footer a{
-            color:rgb(78, 78, 78);
-        }  
-        .footer a:hover{
-            color:rgb(161, 161, 161);
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
-<body>
-    <a href="https://github.com/techytushar/would-you-have-survived" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" height="140px" width="140px"></a>
-    <div class="heading">
-        <h1>Would you have survived?</h1>
-        <h3>Fill the form below to predict whether you would have survived on the Titanic ship.</h3>
-        <h4>It uses a machine learning model trained on the Kaggle Titanic Dataset using the Random Forest Classifier which gained an accuracy of 78.94%</h4>
-        <h5>PS: I don't intend to hurt anyone's feelings.</h5>
-    </div>
-    <div class="form" id="form">
-        <div class="alert alert-danger error">
-        </div>
-        <form class="form-horizontal">
-            <div class="form-group">
-                <label class="control-label col-sm-4" for="name">Name:</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" id="name" placeholder="Name">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-4" for="age">Age:</label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" id="age" placeholder="Age" maxlength="3">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-4" for="sibsp">Number of Sibling/Spouse aboard:</label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" id="sibsp" maxlength="2">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-4" for="parch">Number of Parents/Children aboard:</label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" id="parch" maxlength="2">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-4" for="pclass">Ticket Class: </label>
-                <div class="col-sm-6 choice">
-                    <label class="radio-inline"><input type="radio" name="pclass" checked value="1">First Class</label>
-                    <label class="radio-inline"><input type="radio" name="pclass" value="2">Second Class</label>
-                    <label class="radio-inline"><input type="radio" name="pclass" value="3">Third Class</label> 
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-4" for="gender">Gender: </label>
-                <div class="col-sm-6 choice">
-                    <label class="radio-inline"><input type="radio" name="gender" value="1" checked>Male</label>
-                    <label class="radio-inline"><input type="radio" name="gender" value="0">Female</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-4" for="port">Port of Embarkation: </label>
-                <div class="col-sm-6 choice">
-                    <label class="radio-inline"><input type="radio" name="port" value="1" checked>Cherbourg</label>
-                    <label class="radio-inline"><input type="radio" name="port" value="2">Queenstown</label>
-                    <label class="radio-inline"><input type="radio" name="port" value="3">Southampton</label> 
-                </div>
-            </div>
-        </form>
-        <div class="form-group">
-            <button id="predict" class="btn btn-success">Predict!</button>
-        </div>
 
-    </div>
+<body class="bg-grey-lighter mt-4">
+    <div class="rounded bg-white container mx-auto p-4 border-t-4 border-blue-dark max-w-lg shadow">
+        <a href="https://github.com/techytushar/would-you-have-survived" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;"
+                src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"
+                height="140px" width="140px"></a>
+        <div class="leading-normal">
+            <h1>Would you have survived?</h1>
+            <p class="text-grey-darker">Fill the form below to predict whether you would have survived on
+                the Titanic ship.</p>
+            <p class="text-grey-darker">It uses a machine learning model trained on the Kaggle Titanic
+                Dataset using the Random Forest Classifier which gained an accuracy of 78.94%</p>
+            <p class="text-grey-dark font-thin">PS: I don't intend to hurt anyone's feelings.</p>
+        </div>
+        <div class="mt-4" id="form">
+            <div class="alert error bg-red-lightest hidden p-4 text-center rounded mb-4">
+            </div>
+            <form>
+                <div class="flex flex-1 border-b border-b-2 border-blue-dark max-w-sm mb-2">
+                    <input class="appearance-none bg-transparent border-none w-full text-grey-darker mr-3 py-1 px-2 leading-tight focus:outline-none"
+                        type="text" id="name" placeholder="Name">
+                </div>
+                <div class="flex flex-1 border-b border-b-2 border-blue-dark max-w-sm mb-2">
+                    <input class="appearance-none bg-transparent border-none w-full text-grey-darker mr-3 py-1 px-2 leading-tight focus:outline-none"
+                        type="text" id="age" placeholder="Age" maxlength="3">
+                </div>
+                <div class="flex flex-1 border-b border-b-2 border-blue-dark max-w-sm mb-2">
+                    <input class="appearance-none bg-transparent border-none w-full text-grey-darker mr-3 py-1 px-2 leading-tight focus:outline-none"
+                        type="text" id="sibsp" maxlength="2" placeholder="Number of Siblings or Spouse aboard">
+                </div>
+                <div class="flex flex-1 border-b border-b-2 border-blue-dark max-w-sm mb-2">
+                    <input class="appearance-none bg-transparent border-none w-full text-grey-darker mr-3 py-1 px-2 leading-tight focus:outline-none"
+                        type="text" id="parch" maxlength="2" placeholder="Number of Parents or Children aboard">
+                </div>
+                <div class="leading-normal">
 
-    <button type="button" class="btn btn-info btn-lg" id="modal-button" data-toggle="modal" data-target="#myModal"></button>
-    <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">    
-            <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Predicting...</h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+
+                    <div>
+                        <label class="text-grey-dark font-semibold" for="pclass">Ticket Class: </label>
+                        <div class="flex flex-col">
+                            <label class="text-sm text-grey-dark"><input class="mr-2" type="radio" name="pclass" checked value="1">First Class</label>
+                            <label class="text-sm text-grey-dark"><input class="mr-2" type="radio" name="pclass" value="2">Second Class</label>
+                            <label class="text-sm text-grey-dark"><input class="mr-2" type="radio" name="pclass" value="3">Third Class</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-grey-dark font-semibold" for="gender">Gender: </label>
+                        <div class="flex flex-col">
+                            <label class="text-sm text-grey-dark"><input class="mr-2" type="radio" name="gender" value="1" checked>Male</label>
+                            <label class="text-sm text-grey-dark"><input class="mr-2" type="radio" name="gender" value="0">Female</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-grey-dark font-semibold" for="port">Port of Embarkation: </label>
+                        <div class="flex flex-col">
+                            <label class="text-sm text-grey-dark"><input class="mr-2" type="radio" name="port" value="1" checked>Cherbourg</label>
+                            <label class="text-sm text-grey-dark"><input class="mr-2" type="radio" name="port" value="2">Queenstown</label>
+                            <label class="text-sm text-grey-dark"><input class="mr-2" type="radio" name="port" value="3">Southampton</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="mt-4">
+                <button id="predict" class="border-2 text-white bg-blue-dark font-semibold border-blue-dark px-2 py-1 rounded">Predict!</button>
             </div>
         </div>
     </div>
-    <center>
-    <p class="footer">Made with <span style="color:rgb(255, 109, 109)">♥</span> by <a href="https://techytushar.github.io/" target="_blank">Tushar Mittal (@techytushar)</a></p>
-    </center>
+    <p class="footer text-center pt-4">Made with <span style="color:rgb(255, 109, 109)">♥</span> by <a href="https://techytushar.github.io/"
+            target="_blank">Tushar Mittal (@techytushar)</a></p>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <script type="text/javascript">
-        function display_error(message){
-            $(".error").removeClass("alert-success alert-warning");
-            $(".error").addClass("alert-danger");
-            $("div.error").html(`<strong>${message}</strong>`);
-            $("div.error").css("display","block");
-            setTimeout(()=>{
-                $(".error").html("");
-                $(".error").css("display", "none");
-            },2000)  
-        }
 
-        function make_form(){
-            let form = {};
-            form['name'] = $("#name").val();
-            form['age'] = $("#age").val();
-            form['sibsp'] = $("#sibsp").val();
-            form['parch'] = $("#parch").val();
-            form['pclass'] = $('input[name=pclass]:checked').val();
-            form['port'] = $('input[name=port]:checked').val();
-            form['sex'] = $('input[name=gender]:checked').val();
-            return form;
-        }
+<script type="text/javascript">
+    function display_error(message) {
+        $(".error").removeClass("alert-success alert-warning");
+        $(".error").addClass("alert-danger");
+        $("div.error").html(`<strong>${message}</strong>`);
+        $("div.error").css("display", "block");
+        setTimeout(() => {
+            $(".error").html("");
+            $(".error").css("display", "none");
+        }, 2000)
+    }
 
-        $("#predict").click(()=>{
-            let name = $("#name").val().trim();
-            let age = $("#age").val().trim();
-            let sibsp = $("#sibsp").val().trim();
-            let parch = $("#parch").val().trim();
-            let pclass = $('input[name=pclass]:checked').val();
-            let port = $('input[name=port]:checked').val();
-            let gender = $('input[name=gender]:checked').val();
-            let regex = /^[0-9]+$/;
-            if (name==""){
-                display_error("Please enter a valid name");
-                return;
-            }
-            if (age=="" || !age.match(regex)){
-                display_error("Please enter a valid age");
-                return;
-            }
-            if (sibsp=="" || parch=="" || !sibsp.match(regex) || !parch.match(regex)){
-                display_error("Please enter a valid integer value");
-                return;
-            }
-            name = name.split(" ")[0].toUpperCase();
-            let form = make_form();
-            $(".modal-header").removeClass("red-modal green-modal yellow-modal");
-            $(".modal-body").html('<img src="{{ url_for("static", filename="ajax-loader.gif") }}" alt="loading gif" height="150px" width="150px">');
-            $(".modal-title").text("Predicting...");
-            $("#modal-button").click();
-            $.ajax({
-                type: "POST",
-                contentType: 'application/json;charset=UTF-8',
-                enctype: 'multipart/form-data',
-                url: "/predict",
-                cache: false,
-                dataType: 'json',
-                timeout: 600000,
-                data: JSON.stringify(form),
-                success: function (data) {
-                    if(data["survived"]=='1'){
-                        $(".modal-header").removeClass("red-modal yellow-modal");
-                        $(".modal-header").addClass("green-modal");
-                        $(".modal-title").text("");
-                        $(".modal-body").html(`<h3><strong>Congratulations ${name}!</strong> You would have survived the Titanic Crash. :)</h3>`);
-                    }
-                    else{
-                        $(".modal-header").removeClass("red-modal green-modal");
-                        $(".modal-header").addClass("yellow-modal");
-                        $(".modal-title").text("");
-                        $(".modal-body").html(`<h3><strong>Sorry ${name}!</strong> You would not have survived the Titanic Crash. :(</h3>`);
-                    }
-                },
-                error: function (e) {
-                    $(".modal-header").removeClass("green-modal yellow-modal");
-                    $(".modal-header").addClass("red-modal");
-                    $(".modal-title").text("");
-                    $(".modal-body").html(`<h3>Some error occured, please try again later</h3>`);
+    function make_form() {
+        let form = {};
+        form['name'] = $("#name").val();
+        form['age'] = $("#age").val();
+        form['sibsp'] = $("#sibsp").val();
+        form['parch'] = $("#parch").val();
+        form['pclass'] = $('input[name=pclass]:checked').val();
+        form['port'] = $('input[name=port]:checked').val();
+        form['sex'] = $('input[name=gender]:checked').val();
+        return form;
+    }
+
+    $("#predict").click(() => {
+        let name = $("#name").val().trim();
+        let age = $("#age").val().trim();
+        let sibsp = $("#sibsp").val().trim();
+        let parch = $("#parch").val().trim();
+        let pclass = $('input[name=pclass]:checked').val();
+        let port = $('input[name=port]:checked').val();
+        let gender = $('input[name=gender]:checked').val();
+        let regex = /^[0-9]+$/;
+        if (name == "") {
+            display_error("Please enter a valid name");
+            return;
+        }
+        if (age == "" || !age.match(regex)) {
+            display_error("Please enter a valid age");
+            return;
+        }
+        if (sibsp == "" || parch == "" || !sibsp.match(regex) || !parch.match(regex)) {
+            display_error("Please enter a valid integer value");
+            return;
+        }
+        name = name.split(" ")[0].toUpperCase();
+        let form = make_form();
+        $.ajax({
+            type: "POST",
+            contentType: 'application/json;charset=UTF-8',
+            enctype: 'multipart/form-data',
+            url: "/predict",
+            cache: false,
+            dataType: 'json',
+            timeout: 600000,
+            data: JSON.stringify(form),
+            success: function (data) {
+                if (data["survived"] == '1') {
+                    swal("Survival", `Congratulations ${name}! Survivial is yours.`, "success");
                 }
-            });
-        })
+                else {
+                    swal("Sinking Ship", `Sorry ${name}! You would not have survived the Titanic Crash. :(`, "warning");
+                }
+            },
+            error: function (e) {
+                swal("Error", "Some error occured, please try again later", "error");
+            }
+        });
+    })
 
-    </script>
+</script>
+
 </html>
