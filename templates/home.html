@@ -130,6 +130,7 @@
             return;
         }
         name = name.split(" ")[0].toUpperCase();
+        $("#predict").text("Predicting...");
         let form = make_form();
         $.ajax({
             type: "POST",
@@ -143,13 +144,16 @@
             success: function (data) {
                 if (data["survived"] == '1') {
                     swal("Survival", `Congratulations ${name}! Survivial is yours.`, "success");
+                    $("#predict").text("Predict");
                 }
                 else {
                     swal("Sinking Ship", `Sorry ${name}! You would not have survived the Titanic Crash. :(`, "warning");
+                    $("#predict").text("Predict");
                 }
             },
             error: function (e) {
                 swal("Error", "Some error occured, please try again later", "error");
+                $("#predict").text("Predict");
             }
         });
     })
